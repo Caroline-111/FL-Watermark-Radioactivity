@@ -110,14 +110,14 @@ def robust_aggregator(worker_updates, config):
     for name, p in unfiltered_updates.items():
         torch.cuda.empty_cache()
         if 'embed_out' not in name and 'embed_in' not in name:
-            print(f"layer name: {name}, shape:{p.shape}", flush=True)
+            # print(f"layer name: {name}, shape:{p.shape}", flush=True)
             filter_grad[name], wm_workers_filtered, workers_filtered = randomized_agg_forced(p, config.DIRTY_WORKER, (config.DIRTY_WORKER / config.N_WORKER), device="cuda")
             recall[name] = wm_workers_filtered / config.DIRTY_WORKER
             precision[name] = wm_workers_filtered / workers_filtered
-            print(f"Corrupted Workers Filtered: {wm_workers_filtered}, Workers Filtered: {workers_filtered}", flush=True)
+            # print(f"Corrupted Workers Filtered: {wm_workers_filtered}, Workers Filtered: {workers_filtered}", flush=True)
         else:
             # Split into 8 chunks along dimension 1
-            print(f"Processing large parameter {name} in chunks, shape:{p.shape}", flush=True)
+            # print(f"Processing large parameter {name} in chunks, shape:{p.shape}", flush=True)
             chunk_num = 8
             chunks = torch.chunk(p, chunk_num, dim=1)      
             
@@ -129,7 +129,7 @@ def robust_aggregator(worker_updates, config):
                 partial, wm_workers_filtered, workers_filtered = randomized_agg_forced(chunk, config.DIRTY_WORKER, (config.DIRTY_WORKER / config.N_WORKER), device="cuda")
                 recall_val += wm_workers_filtered / config.DIRTY_WORKER
                 precision_val += wm_workers_filtered / workers_filtered
-                print(f"Corrupted Workers Filtered: {wm_workers_filtered}, Workers Filtered: {workers_filtered}", flush=True)
+                # print(f"Corrupted Workers Filtered: {wm_workers_filtered}, Workers Filtered: {workers_filtered}", flush=True)
                 processed_chunks.append(partial)
 
             filter_grad[name] = torch.cat(processed_chunks, dim=0)

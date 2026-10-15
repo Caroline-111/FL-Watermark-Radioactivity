@@ -20,7 +20,7 @@ class WatermarkType(Enum):
 class Config:
     def __init__(self):
         # --- Paths ---
-        self.GPU = 1
+        self.GPU = 0
         self.PROCESS = 0
         self.CACHE_DIR = f"./huggingface_cache_g{self.GPU}_p{self.PROCESS}"
         self.OUTPUT_DIR = f"./output_g{self.GPU}_p{self.PROCESS}"
