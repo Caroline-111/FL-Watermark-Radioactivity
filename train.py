@@ -200,7 +200,7 @@ def main():
                 for name, update in updates.items():
                     worker_updates[name].append(update)
       
-            del worker_model
+            del worker_model, trainer
             torch.cuda.empty_cache()
 
         # Strong Byzantine Robust Aggregator 
@@ -229,12 +229,19 @@ def main():
                     else:
                         # Direct parameter update (standard FedAvg)
                         param.add_(avg_update.to(param.device).to(torch.float32))
-        
+
+        # Clean up storage
+        del avg_update, worker_updates
+        if config.WHETHER_FILTER: 
+            del filter_grad, recall, precision
+
         # Apply server optimizer step if using Adam
         if config.SERVER_OPTIMIZER == OptimizerType.ADAM:
             server_optimizer.step()
             server_optimizer.zero_grad()
 
+        torch.cuda.empty_cache()
+        
         # Evaluate current global model
         print(f"Evaluating global model after round {round_num + 1}...")
         eval_trainer = Trainer(
@@ -305,7 +312,7 @@ def main():
     global_model.save_pretrained(final_model_path)
 
     # --- Clean up memory ---
-    del model, initial_trainer, trainer, final_trainer, worker_datasets 
+    del model, initial_trainer, trainer, final_trainer, worker_datasets
     gc.collect()
     torch.cuda.empty_cache()
 

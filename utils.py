@@ -336,6 +336,7 @@ def watermark_generate(train_dataset, config):
 
 def watermark_detect(wm_train_dataset, model, config): 
     model.eval()
+    model.cpu()
     # -- Create Detector ---
     if config.WATERMARK == WatermarkType.KIRCHENBAUER:
         dic = {}
@@ -345,7 +346,7 @@ def watermark_detect(wm_train_dataset, model, config):
                                     config.SEEDING, 
                                     config.HASH_KEY, 
                                     vocab_size=model.config.vocab_size, 
-                                    gamma=config.GAMMA) 
+                                    gamma=config.GAMMA)
     elif config.WATERMARK == WatermarkType.KUDITIPUDI:
         dic =[]
         detector = TransformDetector(n=config.ROBUST_N, 
@@ -359,7 +360,7 @@ def watermark_detect(wm_train_dataset, model, config):
                                     config.WM_SEED, 
                                     config.SEEDING, 
                                     config.HASH_KEY, 
-                                    vocab_size=model.config.vocab_size) 
+                                    vocab_size=model.config.vocab_size)
 
     wm_train_dataset = list(wm_train_dataset)
     for i in range(0, len(wm_train_dataset), config.CHUNK_SIZE):
@@ -367,26 +368,16 @@ def watermark_detect(wm_train_dataset, model, config):
         
         token_count = torch.tensor([x["token_count"] for x in batch])
         total_len = max(token_count)
-
+        
         if config.DATASET == DatasetType.ALPACA: 
             start_pos = min(t['prompt_size'] for t in batch) + detector.ngram
-
-            input_ids = pad_sequence(
-                [torch.tensor(x["input_ids"]) for x in batch],
-                batch_first=True,
-                padding_value=0
-            )
-            attention_mask = pad_sequence(
-                [torch.tensor(x["attention_mask"]) for x in batch],
-                batch_first=True,
-                padding_value=0
-            )
             prompt_size = torch.tensor([x["prompt_size"] + detector.ngram for x in batch])
+
         elif config.DATASET == DatasetType.C4:
             start_pos = config.START_POS
     
-            input_ids = torch.stack([torch.tensor(x["input_ids"]) for x in batch])
-            attention_mask = torch.stack([torch.tensor(x["attention_mask"]) for x in batch])
+        input_ids = torch.stack([torch.tensor(x["input_ids"]) for x in batch])
+        attention_mask = torch.stack([torch.tensor(x["attention_mask"]) for x in batch])
 
         # Compute logits
         logits = model(input_ids=input_ids, attention_mask=attention_mask).logits
