@@ -1,0 +1,1 @@
+srun --export=ALL --gres=gpu:H100:1 --ntasks=1 --cpus-per-task=2 python train.py --process 1 --dataset_path "./dataset_alpaca.json" --whether_save_wm --dataset alpaca --model_checkpoint "EleutherAI/pythia-160m-deduped" > output_p1_alpaca_160M_wm.txt &
