@@ -3,7 +3,7 @@
 #SBATCH -N 1
 #SBATCH --ntasks-per-node=1       # Request 1 cores
 #SBATCH --cpus-per-task=2
-#SBATCH --mem=160G 
+#SBATCH --mem-per-gpu=160G 
 #SBATCH --gres=gpu:H100:1         # Request 1 GPUs
 #SBATCH -t 16:00:00
 #SBATCH -o Report-%j.out
@@ -19,6 +19,6 @@ conda activate provenance_env
 
 cd /home/hice1/lhuang340/scratch/research/watermark/FL-Watermark-Radioactivity
 
-srun --export=ALL --gres=gpu:H100:1 --ntasks=1 --cpus-per-task=2 python train.py --process 2 --dataset_path "./dataset_alpaca.json" --whether_filter --whether_save_wm --dataset alpaca --model_checkpoint "EleutherAI/pythia-410m-deduped" > output_p2_alpaca_410M_filter.txt &
+srun --export=ALL --gres=gpu:H100:1 --ntasks=1 --cpus-per-task=2 python train.py --process 2 --dataset_path "./experiments/alpaca/dataset_alpaca.json" --whether_filter --whether_load_wm --whether_load_model --dataset alpaca --model_checkpoint "EleutherAI/pythia-410m-deduped" > output_p2_alpaca_410M_filter.txt &
 
 wait

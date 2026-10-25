@@ -1,9 +1,8 @@
 #!/bin/bash
 #SBATCH -J SlurmPythonGPT2
-#SBATCH -N 1
 #SBATCH --ntasks-per-node=1       # Request 1 cores
 #SBATCH --cpus-per-task=2
-#SBATCH --mem=160G 
+#SBATCH --mem-per-gpu=160G 
 #SBATCH --gres=gpu:H100:1         # Request 1 GPUs
 #SBATCH -t 16:00:00
 #SBATCH -o Report-%j.out
@@ -19,6 +18,6 @@ conda activate provenance_env
 
 cd /home/hice1/lhuang340/scratch/research/watermark/FL-Watermark-Radioactivity
 
-srun --export=ALL --gres=gpu:H100:1 --ntasks=1 --cpus-per-task=2 python train.py --process 4 --dataset_path "./dataset_c4.json" --whether_filter --whether_save_wm --dataset c4 --model_checkpoint "EleutherAI/pythia-160m-deduped" > output_p4_c4_160M_filter.txt &
+srun --export=ALL --gres=gpu:H100:1 --ntasks=1 --cpus-per-task=2 python train.py --process 4 --dataset_path "./dataset_16.6%.json" --model_checkpoint "EleutherAI/pythia-160m-deduped" --dirty_worker 5 --wm_size 2560 --whether_filter > p4_c4_16.6%_filter.txt &
 
 wait
