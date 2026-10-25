@@ -81,7 +81,7 @@ If you use this code, please cite:
 
 This repository incorporates adapted code from upstream projects, including:
 
-- the watermark implementation from Facebook Research's Radioactive Watermark project: https://github.com/facebookresearch/radioactive-watermark
-- the robust aggregation implementation from the RandEigen artifacts project: https://github.com/dezhanglee/randeigen_artifacts
+- the watermark implementation from https://github.com/facebookresearch/radioactive-watermark
+- the robust aggregation implementation from https://github.com/dezhanglee/randeigen_artifacts
 
 The watermark modules and aggregation-related code retain upstream copyright notices and references to prior implementations. Preserve those notices when redistributing this code. This snapshot does not include a root `LICENSE` file, and no new license is asserted by this README; please consult the upstream repositories for their original licensing terms.
