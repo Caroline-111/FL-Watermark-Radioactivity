@@ -10,7 +10,7 @@ Can watermarks in training data remain detectable after federated fine-tuning? C
 
 This work studies **watermark radioactivity** in federated learning (FL). We compare benign federated learning (**VanillaFL**) with an active server that uses strong robust aggregation to filter client updates (**ActiveFL**). Our experiments show that the evaluated watermarks remain radioactive under VanillaFL but lose detectability under ActiveFL, revealing a trade-off between watermark radioactivity, robustness, and utility.
 
-The paper evaluates Kirchenbauer-style **KGW+** and Kuditipudi-style **KTH-ITS** watermarks, Pythia models, and the C4 and Alpaca datasets. The code also exposes an Aaronson-style watermark option.
+The paper evaluates Kirchenbauer-style **KGW+** and Kuditipudi-style **KTH-ITS** watermarks. The code also exposes an Aaronson-style watermark option.
 
 ## Repository contents
 
