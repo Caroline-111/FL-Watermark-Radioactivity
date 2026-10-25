@@ -36,8 +36,7 @@ The paper reports experiments on an 80 GB H100; this is the experimental hardwar
 
 ## Run experiments
 
-The repo includes experiment launch scripts in [scripts/experiments](scripts/experiments). These are Slurm-based examples used to run the paper’s training jobs. For example, [scripts/experiments/table_1&2.sh](scripts/experiments/table_1&2.sh) launches the C4 and Alpaca watermark experiments with the `train.py` entry point.
-
+The repo includes experiment launch scripts in [scripts/experiments](scripts/experiments). These are Slurm-based examples used to run the paper’s training jobs. 
 A typical direct launch looks like:
 
 ```bash
@@ -49,7 +48,7 @@ python train.py \
   --watermark kirchenbauer
 ```
 
-The exact experiment command depends on the dataset, model size, and watermark type; the scripts in [scripts/experiments](scripts/experiments) are the reference workflow.
+The exact experiment command depends on the dataset, model, and watermark type; the scripts in [scripts/experiments](scripts/experiments) are the reference workflow.
 
 ## Reuse generated training data
 
