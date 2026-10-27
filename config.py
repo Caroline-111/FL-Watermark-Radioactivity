@@ -48,7 +48,7 @@ class Config:
         self.WHETHER_LOAD_WM = False
         self.WHETHER_SAVE_WM = False
         self.WHETHER_SYNTHETIC = False 
-        self.CHECKPOINT_FREQ = 25
+        self.CHECKPOINT_FREQ = 10
 
         # --- Watermark Hyperparameters ---
         self.START_POS = 20 
@@ -134,7 +134,10 @@ class Config:
         parser.add_argument('--total_size', type=int, help='Total size')
         parser.add_argument('--chunk_size', type=int, help='Chunk size')
         parser.add_argument('--whether_filter', action='store_true', help='Whether to filter')
-        
+
+        parser.add_argument('--delta', type=float, help='Watermark delta')
+        parser.add_argument('--temperature', type=float, help='Watermark temperature')
+  
         return parser
 
     def log_all_args(self):
